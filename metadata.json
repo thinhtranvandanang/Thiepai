@@ -1,0 +1,6 @@
+{
+  "name": "Thiệp điện tử AI – Lời tri ân 20/11",
+  "description": "Ứng dụng tạo thiệp chúc mừng Ngày Nhà giáo Việt Nam 20/11 với lời chúc AI cá nhân hóa, thiết kế bảng phấn hoa tri ân, xuất ảnh PNG 1080x1440 và gửi email trực tiếp tới thầy cô.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
