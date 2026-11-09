@@ -62,6 +62,9 @@ export default function App() {
       },
       () => {
         setCurrentUser(null);
+      },
+      (errorMsg) => {
+        setApiError(errorMsg);
       }
     );
 
@@ -96,19 +99,7 @@ export default function App() {
       }
     } catch (err: any) {
       console.error('Lỗi đăng nhập Google:', err);
-      const msg = err?.message || '';
-      if (
-        msg.includes('access_denied') ||
-        msg.includes('verification process') ||
-        msg.includes('developer-approved testers') ||
-        err?.code === 'auth/access-denied'
-      ) {
-        setApiError(
-          'Tài khoản Gmail này chưa được thêm vào mục "Test Users" (Người dùng thử nghiệm) trên Google Cloud Console của dự án gen-lang-client-0794434867. Bạn có thể đăng nhập bằng tài khoản tạo dự án (thinhtv15@fpt.edu.vn), hoặc thêm email vào Test Users trong Google Cloud, hoặc dùng chức năng gửi qua Máy chủ SMTP.'
-        );
-      } else {
-        setApiError(err.message || 'Không thể đăng nhập tài khoản Google. Vui lòng thử lại!');
-      }
+      setApiError(err.message || 'Không thể đăng nhập tài khoản Google. Vui lòng thử lại!');
     } finally {
       setIsLoggingIn(false);
     }
@@ -197,16 +188,17 @@ export default function App() {
       {/* Main Workspace */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {apiError && (
-          <div className="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-sm flex items-center justify-between shadow-sm">
-            <div className="flex items-center gap-2.5">
-              <AlertCircle className="w-5 h-5 text-rose-600 shrink-0" />
-              <span>{apiError}</span>
+          <div className="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-sm flex items-start justify-between shadow-sm">
+            <div className="flex items-start gap-2.5 flex-1 pr-2">
+              <AlertCircle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
+              <div className="leading-relaxed">{apiError}</div>
             </div>
             <button
-              onClick={() => handleGenerate(formData)}
-              className="text-xs font-bold text-rose-700 underline hover:text-rose-900 cursor-pointer ml-4"
+              onClick={() => setApiError(null)}
+              className="text-xs font-bold text-rose-700 hover:text-rose-900 cursor-pointer ml-3 px-2 py-1 hover:bg-rose-100 rounded"
+              title="Đóng thông báo"
             >
-              Thử lại
+              ✕ Đóng
             </button>
           </div>
         )}

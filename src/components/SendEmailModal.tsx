@@ -162,8 +162,13 @@ export const SendEmailModal: React.FC<SendEmailModalProps> = ({
         if (!accessToken && currentUser) {
           try {
             const freshAuth = await googleSignIn();
-            accessToken = freshAuth.accessToken;
-            onUserLoggedIn(freshAuth.user);
+            if (freshAuth) {
+              accessToken = freshAuth.accessToken;
+              onUserLoggedIn(freshAuth.user);
+            } else {
+              // Đang chuyển hướng trang (signInWithRedirect)
+              return;
+            }
           } catch (signInErr: any) {
             const msg = signInErr?.message || '';
             if (msg.includes('access_denied') || msg.includes('developer-approved testers')) {
@@ -172,7 +177,7 @@ export const SendEmailModal: React.FC<SendEmailModalProps> = ({
                 'Tài khoản Google chưa được duyệt Test User. Bạn hãy bấm chọn phương thức "Tab 2: Gửi qua Máy chủ SMTP" bên cạnh để gửi ngay lập tức mà không cần xác minh!'
               );
             }
-            throw new Error('Vui lòng hoàn tất đăng nhập Google để cấp quyền gửi Gmail.');
+            throw new Error(msg || 'Vui lòng hoàn tất đăng nhập Google để cấp quyền gửi Gmail.');
           }
         }
 
